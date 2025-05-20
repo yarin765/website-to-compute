@@ -49,14 +49,29 @@ body {
 .illustration {
   max-width:30%;
   margin:1rem 0 2rem 0;
-  animation: 1s ease-out 0s 1 slideIn;
+  animation: 1s ease-out 0s 1 spinIn;
 }
-@keyframes slideIn {
+@keyframes spinIn {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+.illustration-404 {
+  max-width:30%;
+  margin:1rem 0 2rem 0;
+  animation: 1s ease-out 0s 1 spinUp;
+  filter: grayscale(100%);
+  animation-fill-mode: forwards;
+} 
+@keyframes spinUp {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(180deg);
   }
 }
 
