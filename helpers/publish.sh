@@ -1,30 +1,56 @@
 #!/bin/bash
 # This script runs when you hit the Publish button!
 
-printf '🚨 This action will deploy a Compute app to your Fastly account and publish your site content – do you want to proceed? (y/n)? '
-read answer
+PROJECT="${GITHUB_USER}-${RepositoryName}"
+DOMAIN="?"
+CONFIRM="🚨 Deploy a Compute app for this repo in your Fastly account and publish your blog content? (y/n) "
 
-if [ "$answer" != "${answer#[Yy]}" ] ; then 
-    if [ ! $FASTLY_API_TOKEN ]; then 
-        echo '⚠️ Grab an API key and add it your repo before deploying! Check out the README for steps. 📖' 
-    else 
-        if [ ! -d './_deploy/_app' ]; then
-            npm run build
-            npx --yes @fastly/compute-js-static-publish@latest --root-dir=./_deploy/_site --output=./_deploy/_app --not-found-page=./_deploy/_site/404.html --kv-store-name=website-content
+if [ ! $FASTLY_API_TOKEN ]; then 
+    echo '⚠️ Grab an API key and add it your repo before deploying! Check out the README for steps. 📖' 
+else 
+    # check if we already have a service for this repo and if so find the domain
+    if [ -d './deploy/_app' ]; then
+        readarray -t lines < <(npx --yes @fastly/cli service describe --service-name=${PROJECT} 2>/dev/null)
+        IFS='   ' read -r -a array <<< "${lines[0]}"
+        if [[ -n ${array[1]} ]]; then
+            readarray -t lines < <(npx --yes @fastly/cli domain list --service-id=${array[1]} --version=latest)
+            IFS='   ' read -r -a domains <<< "${lines[1]}"
+            DOMAIN="https://${domains[2]}"
+            CONFIRM="🚨 Update the content in your existing website at ${DOMAIN}? (y/n)"
         fi
-        cd ./_deploy/_app
-        name=$(grep '^service_id' fastly.toml | cut -d= -f2-)
-        size=${#name}
-        # do we have a service id (meaning we've deployed)
-        if ! [[ ${size} -gt 3 ]] ; then
-            npx --yes @fastly/cli compute publish --accept-defaults --auto-yes || { echo 'Oops! Something went wrong deploying your app.. 🤬'; exit 1; }
-        fi
-        # compute app is up so we can update content
-        npm run fastly:publish || { echo 'Oops! Something went wrong publishing your content.. 😭'; exit 1; }
-        readarray -t lines < <(npx --yes @fastly/cli domain list --version=latest)
-        IFS='   ' read -r -a array <<< "${lines[1]}"
-        printf "\nWoohoo check out your site at https://${array[2]} 🪩 🛼 🎏\n\n"
     fi
-else
-    exit 1
-fi
+    printf "${CONFIRM}"
+    read answer
+    if [ "$answer" != "${answer#[Yy]}" ]; then 
+        npm run build
+        # check for an existing app folder and if not create one
+        if [ ! -d './deploy/_app' ]; then
+            npx --yes @fastly/compute-js-static-publish@latest --root-dir=./_site --output=./deploy/_app --kv-store-name="${PROJECT}-content" --name="${PROJECT}"
+        else 
+            # if we have an app folder for a different repo (e.g. a fork) recreate the folder
+            name=$(grep '^name' ./deploy/_app/fastly.toml | cut -d= -f2-)
+            if [ ! $name == \"${PROJECT}\" ]; then 
+                cd .. && rm -rf ./deploy/_app
+                npx --yes @fastly/compute-js-static-publish@latest --root-dir=./_site --output=./deploy/_app --kv-store-name="${PROJECT}-content" --name="${PROJECT}"
+            fi
+        fi
+        # check for a service id and if not deploy the app
+        service=$(grep '^service_id' ./deploy/_app/fastly.toml | cut -d= -f2-)
+        size=${#service}
+        if ! [[ ${size} -gt 3 ]]; then
+            cd ./deploy/_app
+            npx --yes @fastly/cli compute publish --accept-defaults --auto-yes || { printf '\nOops! Something went wrong deploying your app.. 🤬\n'; exit 1; }
+        fi
+        # publish the updated content to the kv store and grab the domain
+        cd ./deploy/_app
+        npm run fastly:publish || { printf '\nOops! Something went wrong publishing your content.. 😭\n'; exit 1; }
+        if [ "$DOMAIN" == "?" ]; then
+            readarray -t lines < <(npx --yes @fastly/cli domain list --version=latest)
+            IFS='   ' read -r -a array <<< "${lines[1]}"
+            DOMAIN="https://${array[2]}"
+        fi
+        printf "\nWoohoo check out your site at ${DOMAIN} 🪩 🛼 🎏\n\n"
+    else
+        exit 1
+    fi
+fi 
