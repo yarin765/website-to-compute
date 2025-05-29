@@ -6,7 +6,7 @@ DOMAIN="?"
 CONFIRM="🚨 Deploy a Compute app for this repo in your Fastly account and publish your blog content? (y/n) "
 
 if [ ! $FASTLY_API_TOKEN ]; then 
-    echo '⚠️ Grab an API key and add it your repo before deploying! Check out the README for steps. 📖' 
+    echo '⚠️ Grab a Fastly API key and add it your repo before deploying! Check out the README for steps. 📖' 
 else 
     # check if we already have a service for this repo and if so find the domain
     if [ -d './deploy/_app' ]; then
