@@ -3,7 +3,7 @@
 
 PROJECT="${GITHUB_USER}-${RepositoryName}"
 DOMAIN="?"
-CONFIRM="🚨 Deploy a Compute app for this repo in your Fastly account and publish your blog content? (y/n) "
+CONFIRM="🚨 Deploy a Compute app for this repo in your Fastly account and publish your website content? (y/n) "
 
 if [ ! $FASTLY_API_TOKEN ]; then 
     echo '⚠️ Grab a Fastly API key and add it your repo before deploying! Check out the README for steps. 📖' 
