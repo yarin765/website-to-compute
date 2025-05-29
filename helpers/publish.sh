@@ -9,15 +9,13 @@ if [ ! $FASTLY_API_TOKEN ]; then
     echo '⚠️ Grab a Fastly API key and add it your repo before deploying! Check out the README for steps. 📖' 
 else 
     # check if we already have a service for this repo and if so find the domain
-    if [ -d './deploy/_app' ]; then
-        readarray -t lines < <(npx --yes @fastly/cli service describe --service-name=${PROJECT} 2>/dev/null)
-        IFS='   ' read -r -a array <<< "${lines[0]}"
-        if [[ -n ${array[1]} ]]; then
-            readarray -t lines < <(npx --yes @fastly/cli domain list --service-id=${array[1]} --version=latest)
-            IFS='   ' read -r -a domains <<< "${lines[1]}"
-            DOMAIN="https://${domains[2]}"
-            CONFIRM="🚨 Update the content in your existing website at ${DOMAIN}? (y/n)"
-        fi
+    readarray -t lines < <(npx --yes @fastly/cli service describe --service-name=${PROJECT} 2>/dev/null)
+    IFS='   ' read -r -a array <<< "${lines[0]}"
+    if [[ -n ${array[1]} ]]; then
+        readarray -t lines < <(npx --yes @fastly/cli domain list --service-id=${array[1]} --version=latest)
+        IFS='   ' read -r -a domains <<< "${lines[1]}"
+        DOMAIN="https://${domains[2]}"
+        CONFIRM="🚨 Update the content in your existing website at ${DOMAIN}? (y/n)"
     fi
     printf "${CONFIRM}"
     read answer
