@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 export default defineConfig(async ({ command, mode }) => {
   return {
     build: {
-      outDir: "_deploy/_site",
+      outDir: "deploy/_site",
       rollupOptions: {
         input: {
           main: 'index.html',
