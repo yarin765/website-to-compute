@@ -15,7 +15,7 @@ else
         readarray -t lines < <(npx --yes @fastly/cli domain list --service-id=${array[1]} --version=latest)
         IFS='   ' read -r -a domains <<< "${lines[1]}"
         DOMAIN="https://${domains[2]}"
-        CONFIRM="🚨 Update the content in your existing website at ${DOMAIN}? (y/n)"
+        CONFIRM="🚨 Update the content in your existing website at ${DOMAIN}? (y/n) "
     fi
     printf "${CONFIRM}"
     read answer
