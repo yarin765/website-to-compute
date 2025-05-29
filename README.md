@@ -108,8 +108,8 @@ GitHub will keep the edits you make in the codespace only for a limited time, so
 
 This project uses the <a href="https://github.com/fastly/compute-js-static-publish" target="_blank">Fastly JavaScript Static Publisher</a> to turn your blog into a serverless app that runs at the network edge, near your users. 
 
-* The project uses [Vite](https://vite.dev/) to build your site for deployment, placing files in the `_site` folder.
-* The Static Publisher uses those files to scaffold a Compute app that compiles into Webassembly (Wasm) to run fast and securely on the Fastly network – you'll find the Compute code in `_app` after you deploy.
+* The project uses [Vite](https://vite.dev/) to build your site for deployment, placing files in the `deploy/_site` folder.
+* The Static Publisher uses those files to scaffold a Compute app that compiles into Webassembly (Wasm) to run fast and securely on the Fastly network – you'll find the Compute code in `deploy/_app` after you deploy.
 * When you publish, the project deploys the app to Fastly, creating a service and uploading the Wasm to it.
 * It then then publishes your content to a KV Store – a key-value store that also runs on Fastly and that your app can talk to.
 
