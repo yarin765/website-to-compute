@@ -115,6 +115,12 @@ This project uses the <a href="https://github.com/fastly/compute-js-static-publi
 
 _The app itself only needs deployed to Fastly once, when you click the **🚀 Publish** button after that, we just update the content in your KV Store and your Compute app will pull your assets from there._
 
+📝 Your Fastly service and KV Store will include your GitHub username and repo in their names, so you'll only be able to deploy one Compute app per repo unless you tweak the scripts.
+
+⚙️ The settings we use to create the guided experience in the codespace are in the `.devcontainer/` folder.
+
+🧰 You'll find the Fastly CLI commands we use under the hood in the `helpers/publish.sh` script.
+
 💻 If you check the right-hand side of the **Terminal** you'll find multiple processes – this is to run the vite and Fastly commands.
 
 ### Extensions
