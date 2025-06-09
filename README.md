@@ -10,7 +10,7 @@ With this project you can make a website and preview it in your browser, then de
 
 ## In this doc
 
-* [Remix your own site](#remix-your-own-site)
+* [Fork your own site](#fork-your-own-site)
 * [Get to know your website](#get-to-know-your-website)
   * [Share your draft site](#share-your-draft-site)
 * [Deploy your site to Fastly Compute](#deploy-your-site-to-fastly-compute)
@@ -19,7 +19,7 @@ With this project you can make a website and preview it in your browser, then de
   * [Extensions](#extensions)
 * [Keep going! 🚀](#keep-going-)
 
-## Remix your own site
+## Fork your own site
 
 **Fork** [this repository](https://github.com/glitchdotcom/website-to-compute/) to create your own copy of the site.
 
