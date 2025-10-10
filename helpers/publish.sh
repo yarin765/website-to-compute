@@ -23,13 +23,13 @@ else
         npm run build
         # check for an existing app folder and if not create one
         if [ ! -d './deploy/_app' ]; then
-            npx --yes @fastly/compute-js-static-publish@latest --root-dir=./deploy/_site --output=./deploy/_app --kv-store-name="${PROJECT}-content" --name="${PROJECT}"
+            npx --yes @fastly/compute-js-static-publish@latest --root-dir=./deploy/_site --output=./deploy/_app --storage-mode=kv-store --kv-store-name="${PROJECT}-content" --name="${PROJECT}"
         else 
             # if we have an app folder for a different repo (e.g. a fork) recreate the folder
             name=$(grep '^name' ./deploy/_app/fastly.toml | cut -d= -f2-)
             if [ $name != \"${PROJECT}\" ]; then 
                 cd .. && rm -rf ./deploy/_app
-                npx --yes @fastly/compute-js-static-publish@latest --root-dir=./deploy/_site --output=./deploy/_app --kv-store-name="${PROJECT}-content" --name="${PROJECT}"
+                npx --yes @fastly/compute-js-static-publish@latest --root-dir=./deploy/_site --output=./deploy/_app --storage-mode=kv-store --kv-store-name="${PROJECT}-content" --name="${PROJECT}"
             fi
         fi
         # check for a service id and if not deploy the app
