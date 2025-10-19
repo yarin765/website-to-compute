@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>התחברות והרשמה - אתר מקצועי</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1 id="formTitle">התחברות לאתר</h1>
+  <p class="subtitle" id="formSubtitle">הזן את הפרטים שלך כדי להתחבר</p>
+
+  <div class="tabs">
+    <div class="tab active" id="loginTab">התחברות</div>
+    <div class="tab" id="registerTab">הרשמה</div>
+  </div>
+
+  <div id="message" class="message"></div>
+
+  <form id="loginForm" class="active" novalidate>
+    <label for="loginEmail">דואר אלקטרוני</label>
+    <input type="email" id="loginEmail" name="email" placeholder="הכנס דואר אלקטרוני" required />
+    <label for="loginPassword">סיסמה</label>
+    <input type="password" id="loginPassword" name="password" placeholder="הכנס סיסמה" required minlength="6" />
+    <div class="forgot-password">שכחת סיסמה?</div>
+    <button type="submit" class="submit-btn">התחבר</button>
+    <div class="social-buttons">
+      <div class="social-btn google"><img src="https://developers.google.com/identity/images/g-logo.png" alt="גוגל" /> גוגל</div>
+      <div class="social-btn discord"><img src="https://cdn.simpleicons.org/discord/FFFFFF" alt="דיסקורד" /> דיסקורד</div>
+    </div>
+  </form>
+
+  <form id="registerForm" novalidate>
+    <label for="registerName">שם מלא</label>
+    <input type="text" id="registerName" name="name" placeholder="הכנס שם מלא" required minlength="2" maxlength="50" />
+    <label for="registerEmail">דואר אלקטרוני</label>
+    <input type="email" id="registerEmail" name="email" placeholder="הכנס דואר אלקטרוני" required />
+    <label for="registerPassword">סיסמה</label>
+    <input type="password" id="registerPassword" name="password" placeholder="הכנס סיסמה" required minlength="6" />
+    <label for="registerPasswordConfirm">אישור סיסמה</label>
+    <input type="password" id="registerPasswordConfirm" name="passwordConfirm" placeholder="אשר סיסמה" required minlength="6" />
+    <button type="submit" class="submit-btn">הרשם</button>
+  </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
